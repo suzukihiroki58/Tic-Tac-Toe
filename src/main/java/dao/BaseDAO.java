@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class BaseDAO {
 	private static final String driver = "org.mariadb.jdbc.Driver";
 	private static final String url = "jdbc:mariadb://localhost:3306/tictactoe";
-	private static final String user = "root";
+	private static final String username = "root";
 	private static final String password = "";
 	
 	static {
@@ -21,7 +21,7 @@ public class BaseDAO {
     }
 	
 	protected static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(url, user, password);
+		return DriverManager.getConnection(url, username, password);
 	}
 	
 	protected static void closeResources(Connection con, PreparedStatement ps, ResultSet rs) {

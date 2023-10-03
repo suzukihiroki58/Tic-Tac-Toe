@@ -14,15 +14,15 @@ public class UserDAO extends BaseDAO {
 	private static final String user = "root";
 	private static final String password = "";
 	
-	public UserDAO(User ab) {
+	public UserDAO(User u) {
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
         	
             String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
             PreparedStatement ps= con.prepareStatement(sql);
 
-            ps.setString(1, ab.getUsername());
-            ps.setString(2, ab.getPassword());
+            ps.setString(1, u.getUsername());
+            ps.setString(2, u.getPassword());
 
             int r = ps.executeUpdate();
 
@@ -36,27 +36,4 @@ public class UserDAO extends BaseDAO {
             e.printStackTrace();
         }
     }
-	
-//	public static boolean isUsernameExists(String username){
-//		boolean exists = false;
-//		Connection con = null;
-//		PreparedStatement ps = null;
-//		ResultSet rs = null;
-//
-//		try {
-//			con = getConnection();
-//			String sql = "SELECT USERNAME FROM USERS WHERE USERNAME = ?";
-//			ps = con.prepareStatement(sql);
-//			ps.setString(1, username);
-//			rs = ps.executeQuery();
-//			if (rs.next()) {
-//				exists = true;
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			closeResources(con, ps, rs);
-//		}
-//		return exists;
-//	}
 }

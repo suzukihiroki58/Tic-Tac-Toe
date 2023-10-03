@@ -27,13 +27,13 @@ public class UserRegister extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User ub = new User();
-        ub.setUsername(username);
-        ub.setPassword(password);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
 
-        UserDAO urd = new UserDAO(ub);
+        UserDAO urd = new UserDAO(user);
     	HttpSession session = request.getSession();
-        session.setAttribute("user", ub);
+        session.setAttribute("user", user);
 
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/registerSuccess.jsp");
         rd.forward(request, response);
