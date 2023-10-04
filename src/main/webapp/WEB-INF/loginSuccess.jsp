@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>新規登録完了</title>
+<title>ログイン成功</title>
 </head>
 <body>
-新規登録完了
+ログイン成功しました
+<p><a href="LogoutServlet"><button type="button">ログアウト</button></a></p>
 </body>
 </html>

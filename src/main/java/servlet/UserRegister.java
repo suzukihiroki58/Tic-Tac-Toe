@@ -31,11 +31,11 @@ public class UserRegister extends HttpServlet {
         user.setUsername(username);
         user.setPassword(password);
 
-        UserDAO urd = new UserDAO(user);
+        UserDAO.registerUser(user);
     	HttpSession session = request.getSession();
         session.setAttribute("user", user);
 
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/registerSuccess.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/login.jsp");
         rd.forward(request, response);
         }
 

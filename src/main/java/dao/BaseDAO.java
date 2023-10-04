@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 public class BaseDAO {
 	private static final String driver = "org.mariadb.jdbc.Driver";
-	private static final String url = "jdbc:mariadb://localhost:3306/tictactoe";
-	private static final String username = "root";
-	private static final String password = "";
+	protected static final String url = "jdbc:mariadb://localhost:3306/tictactoe";
+	protected static final String username = "root";
+	protected static final String password = "";
 	
 	static {
         try {

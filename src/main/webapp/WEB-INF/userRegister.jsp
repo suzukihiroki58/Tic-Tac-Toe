@@ -7,6 +7,7 @@
 <title>新規登録</title>
 </head>
 <body>
+	<h2>新規ユーザー登録ページ</h2>
 	<form action="UserRegister" method="post">
 		<label>ユーザー名</label>
 		<input type="text" name="username" placeholder="30文字以内" required>
@@ -14,7 +15,7 @@
 		<label>パスワード</label>
 		<input type="password" name="password" placeholder="30文字以内" required>
 		<br>
-		<input type="submit" value="新規ユーザー登録" class="button">
+		<input type="submit" value="登録" class="button">
 	</form>
 </body>
 </html>

@@ -3,26 +3,21 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.User;
 
 public class UserDAO extends BaseDAO {
 	
-	private static final String driver = "org.mariadb.jdbc.Driver";
-	private static final String url = "jdbc:mariadb://localhost:3306/tictactoe";
-	private static final String user = "root";
-	private static final String password = "";
-	
-	public UserDAO(User u) {
-
-        try (Connection con = DriverManager.getConnection(url, user, password)) {
+	public static void registerUser(User user) {
+        try (Connection con = DriverManager.getConnection(url, username, password)) {
         	
             String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
             PreparedStatement ps= con.prepareStatement(sql);
 
-            ps.setString(1, u.getUsername());
-            ps.setString(2, u.getPassword());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
 
             int r = ps.executeUpdate();
 
@@ -36,4 +31,28 @@ public class UserDAO extends BaseDAO {
             e.printStackTrace();
         }
     }
+	
+	public static User findUser(User user) {
+		User returnUser = new User();
+		
+		try (Connection con = DriverManager.getConnection(url, username, password)) {
+			String sql = "SELECT username, password FROM users WHERE username = ? AND password = ?";
+			PreparedStatement ps= con.prepareStatement(sql);
+			
+			ps.setString(1,  user.getUsername());
+			ps.setString(2, user.getPassword());
+			
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				returnUser.setUsername(rs.getString("username"));
+				returnUser.setPassword(rs.getString("password"));
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return returnUser;
+	}
 }
