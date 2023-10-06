@@ -11,19 +11,19 @@ public class BaseDAO {
 	protected static final String url = "jdbc:mariadb://localhost:3306/tictactoe";
 	protected static final String username = "root";
 	protected static final String password = "";
-	
+
 	static {
-        try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-	
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	protected static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(url, username, password);
 	}
-	
+
 	protected static void closeResources(Connection con, PreparedStatement ps, ResultSet rs) {
 		try {
 			if (rs != null) {

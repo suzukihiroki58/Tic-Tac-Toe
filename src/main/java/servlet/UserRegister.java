@@ -16,27 +16,29 @@ import model.User;
 @WebServlet("/UserRegister")
 public class UserRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/userRegister.jsp");
-		rd.forward(request,  response);
+		rd.forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
 
-        UserDAO.registerUser(user);
-    	HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+		UserDAO.registerUser(user);
+		HttpSession session = request.getSession();
+		session.setAttribute("user", user);
 
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/login.jsp");
-        rd.forward(request, response);
-        }
+		RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/login.jsp");
+		rd.forward(request, response);
+	}
 
-    }
+}

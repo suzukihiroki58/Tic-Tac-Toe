@@ -9,41 +9,41 @@ import java.sql.SQLException;
 import model.User;
 
 public class UserDAO extends BaseDAO {
-	
+
 	public static void registerUser(User user) {
-        try (Connection con = DriverManager.getConnection(url, username, password)) {
-        	
-            String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-            PreparedStatement ps= con.prepareStatement(sql);
+		try (Connection con = DriverManager.getConnection(url, username, password)) {
 
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+			String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+			PreparedStatement ps = con.prepareStatement(sql);
 
-            int r = ps.executeUpdate();
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getPassword());
 
-            if(r != 0) {
-                System.out.println("新規登録成功");
-            } else {
-                System.out.println("新規登録失敗");
-            }
+			int r = ps.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-	
+			if (r != 0) {
+				System.out.println("新規登録成功");
+			} else {
+				System.out.println("新規登録失敗");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static User findUser(User user) {
 		User returnUser = new User();
-		
+
 		try (Connection con = DriverManager.getConnection(url, username, password)) {
 			String sql = "SELECT username, password FROM users WHERE username = ? AND password = ?";
-			PreparedStatement ps= con.prepareStatement(sql);
-			
-			ps.setString(1,  user.getUsername());
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getPassword());
-			
+
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				returnUser.setUsername(rs.getString("username"));
 				returnUser.setPassword(rs.getString("password"));
 			} else {
