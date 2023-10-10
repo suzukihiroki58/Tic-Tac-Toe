@@ -8,6 +8,7 @@
 </head>
 <body>
 ログイン成功しました
+<p><a href="TicTacToeServlet"><button type="button">ゲームを始める</button></a></p>
 <p><a href="LogoutServlet"><button type="button">ログアウト</button></a></p>
 </body>
 </html>
