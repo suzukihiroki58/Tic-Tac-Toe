@@ -2,13 +2,13 @@ package model;
 
 public class Board {
 
-	public static void placeSymbol(int position, String player, char[][] gameBoard) {
+	public static void placeSymbol(int position, String player, char[][] gameBoard, String firstPlayer) {
 
 		char symbol = ' ';
-		if (player.equals("human")) {
-			symbol = 'X';
-		} else if (player.equals("cpu")) {
+		if (player.equals(firstPlayer)) {
 			symbol = 'O';
+		} else {
+			symbol = 'X';
 		}
 
 		switch (position) {

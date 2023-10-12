@@ -1,7 +1,7 @@
 package model;
 
 public class HumanPlayer extends BasePlayer {
-	public static void selectCell(char[][] gameBoard) {
+	public static void selectCell(char[][] gameBoard, String firstPlayer) {
 		System.out.println("1〜9の好きな場所を入力してください");
 		int move = TicTacToe.input.nextInt();
 		boolean result = Board.isCellEmpty(move, gameBoard);
@@ -10,6 +10,6 @@ public class HumanPlayer extends BasePlayer {
 			move = TicTacToe.input.nextInt();
 			result = Board.isCellEmpty(move, gameBoard);
 		}
-		Board.placeSymbol(move, "human", gameBoard);
+		Board.placeSymbol(move, "human", gameBoard, firstPlayer);
 	}
 }
