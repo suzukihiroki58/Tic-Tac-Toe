@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="model.TicTacToe"%>
 <%
-request.setCharacterEncoding("UTF8");
-String strMessage = (String) request.getAttribute("message");
+TicTacToe game = (TicTacToe) session.getAttribute("game");
+char[][] board = game.getBoard();
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,38 +15,76 @@ String strMessage = (String) request.getAttribute("message");
 </head>
 <body>
 	<h2>TicTacToe</h2>
-	
+
 	<!--　ランダムで先攻後攻が決定し、ゲーム開始-->
+	<h2>
+		先攻：<%=request.getAttribute("firstPlayer")%></h2>
+	<h2>
+		後攻：<%=request.getAttribute("secondPlayer")%></h2>
 
 	<!--　もしゲームが終了していなければ、どこにSymbolを置くか選ぶ-->
+	<%
+	String winner = (String) request.getAttribute("winner");
+	if (winner == null) {
+	%>
+	<table border="1">
+		<%
+		for (int i = 0; i < 3; i++) {
+		%>
+		<tr>
+			<%
+			for (int j = 0; j < 3; j++) {
+			%>
+			<td>
+				<form action="TicTacToeServlet" method="POST">
+					<input type="submit" name="cell"
+						value="<%=(board[i][j] == ' ' ? " " : board[i][j])%>"> <input
+						type="hidden" name="row" value="<%=i%>"> <input
+						type="hidden" name="col" value="<%=j%>">
+				</form>
+			</td>
+			<%
+			}
+			%>
+		</tr>
+		<%
+		}
+		%>
+	</table>
+
+	<!--　もしゲームが終了していれば、最後の盤面と勝敗結果と再プレイボタンを表示する-->
+	<%
+	} else {
+	%>
+	<h2>
+		勝者：<%=winner%></h2>
+
+	<table border="1">
+		<%
+		for (int i = 0; i < 3; i++) {
+		%>
+		<tr>
+			<%
+			for (int j = 0; j < 3; j++) {
+			%>
+			<td><%=(board[i][j] == ' ' ? " " : board[i][j])%></td>
+			<%
+			}
+			%>
+		</tr>
+		<%
+		}
+		%>
+	</table>
 
 	<form action="TicTacToeServlet" method="POST">
-		<label for="number">1〜9の好きな場所を入力してください</label> <input id="number"
-			name="number" type="number " min="1" max="9" /> <input type="submit"
-			value="Submit">
-			
-		<table border="1">
-		<tr>
-			<td><button type="submit" name="action" value="1">1</button></td>
-			<td><button type="submit" name="action" value="2">2</button></td>
-			<td><button type="submit" name="action" value="3">3</button></td>
-		</tr>
-		<tr>
-			<td><button type="submit" name="action" value="4">4</button></td>
-			<td><button type="submit" name="action" value="5">5</button></td>
-			<td><button type="submit" name="action" value="6">6</button></td>
-		</tr>
-		<tr>
-			<td><button type="submit" name="action" value="7">7</button></td>
-			<td><button type="submit" name="action" value="8">8</button></td>
-			<td><button type="submit" name="action" value="9">9</button></td>
-		</tr>
-	</table>
+		<input type="hidden" name="replay" value="true"> <input
+			type="submit" value="再プレイ">
 	</form>
-	<p>
-		submitした値：<%=strMessage%>
-	</p>
-	
-	<!--　もしゲームが終了していれば、勝敗結果と再プレイボタンを表示する-->
+	<%
+	}
+	%>
+
+
 </body>
 </html>

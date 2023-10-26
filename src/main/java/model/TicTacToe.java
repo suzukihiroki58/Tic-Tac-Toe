@@ -1,167 +1,80 @@
 package model;
 
-import java.util.Random;
-import java.util.Scanner;
-
 public class TicTacToe {
+	private String firstPlayer = null;
+	private String secondPlayer = null;
+	private Board board;
+	private String currentPlayer;
 
-	static Scanner input = new Scanner(System.in);
+	public TicTacToe() {
+		this.board = new Board();
+	}
 
-	public static void main(String[] args) {
-		char[][] gameBoard = { { '_', '|', '_', '|', '_' }, { '_', '|', '_', '|', '_' }, { ' ', '|', ' ', '|', ' ' } };
-		Board.printBoard(gameBoard);
-		boolean gameOver = false;
-		boolean playAgain = true;
-		Random rand = new Random();
+	public void decideTurnRandomly() {
+		if (Math.random() < 0.5) {
+			firstPlayer = "Human";
+			secondPlayer = "CPU";
+		} else {
+			firstPlayer = "CPU";
+			secondPlayer = "Human";
+		}
+		currentPlayer = firstPlayer;
+	}
 
-		while (playAgain) {
-			String firstPlayer = rand.nextBoolean() ? "human" : "cpu";
+	public String getFirstPlayer() {
+		return firstPlayer;
+	}
 
-			while (!gameOver) {
-				if ("human".equals(firstPlayer)) {
-					HumanPlayer.selectCell(gameBoard, firstPlayer);
-					gameOver = checkWinner(gameBoard, firstPlayer);
-					if (gameOver) {
-						break;
-					}
+	public String getSecondPlayer() {
+		return secondPlayer;
+	}
 
-					CPUPlayer.selectCellAutomatically(gameBoard, firstPlayer);
-					gameOver = checkWinner(gameBoard, firstPlayer);
-					if (gameOver) {
-						break;
-					}
-				} else {
-					CPUPlayer.selectCellAutomatically(gameBoard, firstPlayer);
-					gameOver = checkWinner(gameBoard, firstPlayer);
-					if (gameOver) {
-						break;
-					}
+	public String getCurrentPlayer() {
+		return currentPlayer;
+	}
 
-					HumanPlayer.selectCell(gameBoard, firstPlayer);
-					gameOver = checkWinner(gameBoard, firstPlayer);
-					if (gameOver) {
-						break;
-					}
+	public void switchTurn() {
+		currentPlayer = currentPlayer.equals(firstPlayer) ? secondPlayer : firstPlayer;
+	}
+
+	public char[][] getBoard() {
+		return board.getBoard();
+	}
+
+	public String checkWinner() {
+		char[][] currentBoard = board.getBoard();
+		for (int i = 0; i < 3; i++) {
+			if (currentBoard[i][0] != ' ' && currentBoard[i][0] == currentBoard[i][1]
+					&& currentBoard[i][1] == currentBoard[i][2]) {
+				return currentBoard[i][0] == 'O' ? firstPlayer : secondPlayer;
+			}
+		}
+
+		for (int i = 0; i < 3; i++) {
+			if (currentBoard[0][i] != ' ' && currentBoard[0][i] == currentBoard[1][i]
+					&& currentBoard[1][i] == currentBoard[2][i]) {
+				return currentBoard[0][i] == 'O' ? firstPlayer : secondPlayer;
+			}
+		}
+
+		if (currentBoard[0][0] != ' ' && currentBoard[0][0] == currentBoard[1][1]
+				&& currentBoard[1][1] == currentBoard[2][2]) {
+			return currentBoard[0][0] == 'O' ? firstPlayer : secondPlayer;
+		}
+
+		if (currentBoard[0][2] != ' ' && currentBoard[0][2] == currentBoard[1][1]
+				&& currentBoard[1][1] == currentBoard[2][0]) {
+			return currentBoard[0][2] == 'O' ? firstPlayer : secondPlayer;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (currentBoard[i][j] == ' ') {
+					return null;
 				}
 			}
+		}
+		return "引き分け";
 
-			System.out.println("もう1度プレイしますか? はい / いいえ");
-			input.nextLine();
-			String result = input.nextLine();
-
-			switch (result) {
-			case "はい":
-				playAgain = true;
-				resetBoard(gameBoard);
-				gameOver = false;
-				Board.printBoard(gameBoard);
-				break;
-
-			case "いいえ":
-				System.out.println("ありがとうございました");
-				playAgain = false;
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	public static boolean checkWinner(char[][] gameboard, String firstPlayer) {
-		char humanPlayer = 'O';
-		char cpuPlayer = 'X';
-		if (firstPlayer.equals("cpu")) {
-			humanPlayer = 'X';
-			cpuPlayer = 'O';
-		}
-
-		if (gameboard[0][0] == humanPlayer && gameboard[0][2] == humanPlayer && gameboard[0][4] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[0][0] == cpuPlayer && gameboard[0][2] == cpuPlayer && gameboard[0][4] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-		if (gameboard[1][0] == humanPlayer && gameboard[1][2] == humanPlayer && gameboard[1][4] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[1][0] == cpuPlayer && gameboard[1][2] == cpuPlayer && gameboard[1][4] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-		if (gameboard[2][0] == humanPlayer && gameboard[2][2] == humanPlayer && gameboard[2][4] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[2][0] == cpuPlayer && gameboard[2][2] == cpuPlayer && gameboard[2][4] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-
-		if (gameboard[0][0] == humanPlayer && gameboard[1][0] == humanPlayer && gameboard[2][0] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[0][0] == cpuPlayer && gameboard[1][0] == cpuPlayer && gameboard[2][0] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-
-		if (gameboard[0][2] == humanPlayer && gameboard[1][2] == humanPlayer && gameboard[2][2] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[0][2] == cpuPlayer && gameboard[1][2] == cpuPlayer && gameboard[2][2] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-
-		if (gameboard[0][4] == humanPlayer && gameboard[1][4] == humanPlayer && gameboard[2][4] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[0][4] == cpuPlayer && gameboard[1][4] == cpuPlayer && gameboard[2][4] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-
-		if (gameboard[0][0] == humanPlayer && gameboard[1][2] == humanPlayer && gameboard[2][4] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[0][0] == cpuPlayer && gameboard[1][2] == cpuPlayer && gameboard[2][4] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-
-		if (gameboard[2][0] == humanPlayer && gameboard[1][2] == humanPlayer && gameboard[0][4] == humanPlayer) {
-			System.out.println("あなたの勝ちです");
-			return true;
-		}
-		if (gameboard[2][0] == cpuPlayer && gameboard[1][2] == cpuPlayer && gameboard[0][4] == cpuPlayer) {
-			System.out.println("CPUの勝ちです");
-			return true;
-		}
-
-		if (Board.isBoardFull(gameboard)) {
-			System.out.println("引き分けです");
-			return true;
-		}
-
-		return false;
-	}
-
-	public static void resetBoard(char[][] gameBoard) {
-		gameBoard[0][0] = '_';
-		gameBoard[0][2] = '_';
-		gameBoard[0][4] = '_';
-		gameBoard[1][0] = '_';
-		gameBoard[1][2] = '_';
-		gameBoard[1][4] = '_';
-		gameBoard[2][0] = ' ';
-		gameBoard[2][2] = ' ';
-		gameBoard[2][4] = ' ';
 	}
 }
