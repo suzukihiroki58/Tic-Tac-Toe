@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import model.GameRecord;
 
@@ -37,5 +38,37 @@ public class GameRecordsDAO extends BaseDAO {
 		} finally {
 			closeResources(conn, ps, null);
 		}
+	}
+	
+	public GameRecord getLoggedInUserRecord(int userId) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		GameRecord record = new GameRecord();
+		
+		try {
+			conn = getConnection();
+			
+			String selectQuery = "SELECT * FROM game_records WHERE user_id = ?";
+			ps = conn.prepareStatement(selectQuery);
+	        ps.setInt(1, userId);
+
+	        rs = ps.executeQuery();
+	        if (rs.next()) {
+	            record.setUserId(rs.getInt("user_id"));
+	            record.setTotalGames(rs.getInt("total_games"));
+	            record.setWins(rs.getInt("wins"));
+	            record.setLosses(rs.getInt("losses"));
+	            record.setDraws(rs.getInt("draws"));
+	            record.setWinRate(rs.getDouble("win_rate"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        closeResources(conn, ps, rs);
+	    }
+
+	    return record;
 	}
 }

@@ -52,4 +52,8 @@ public class GameRecord {
 		this.draws = draws;
 	}
 
+	public void setWinRate(double double1) {
+		this.winRate = winRate;
+	}
+
 }

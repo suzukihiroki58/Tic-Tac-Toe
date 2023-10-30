@@ -111,9 +111,6 @@ public class TicTacToeServlet extends HttpServlet {
 		record.setUserId(loggedInUser.getUserId());
 		record.setTotalGames(1);
 
-		int userId = loggedInUser.getUserId();
-		System.out.println("UserIdは" + userId);
-
 		if ("Human".equals(winner)) {
 			record.setWins(1);
 		} else if ("CPU".equals(winner)) {

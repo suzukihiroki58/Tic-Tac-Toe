@@ -11,6 +11,7 @@
 <body>
 <%=loginUser.getUserName()%>さんがログインしました
 <p><a href="TicTacToeServlet"><button type="button">ゲームを始める</button></a></p>
+<p><a href="LoginUserRecordServlet"><button type="button">個人戦績を見る</button></button></a></p>
 <p><a href="LogoutServlet"><button type="button">ログアウト</button></a></p>
 </body>
 </html>
