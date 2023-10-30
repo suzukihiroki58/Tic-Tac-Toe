@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.UserDAO;
+import dao.UsersDAO;
 import model.User;
 
 @WebServlet("/UserRegister")
@@ -30,10 +30,10 @@ public class UserRegister extends HttpServlet {
 		String password = request.getParameter("password");
 
 		User user = new User();
-		user.setUsername(username);
+		user.setUserName(username);
 		user.setPassword(password);
 
-		UserDAO.registerUser(user);
+		UsersDAO.registerUser(user);
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 

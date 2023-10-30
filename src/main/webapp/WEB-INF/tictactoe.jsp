@@ -14,6 +14,8 @@ char[][] board = game.getBoard();
 <title>TicTacToe</title>
 </head>
 <body>
+	<h2>
+		ログイン中のユーザー：<%=request.getAttribute("loggedInUser")%></h2>
 	<h2>TicTacToe</h2>
 
 	<!--　ランダムで先攻後攻が決定し、ゲーム開始-->

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import model.User;
 
-public class UserDAO extends BaseDAO {
+public class UsersDAO extends BaseDAO {
 
 	public static void registerUser(User user) {
 		try (Connection con = DriverManager.getConnection(url, username, password)) {
@@ -16,7 +16,7 @@ public class UserDAO extends BaseDAO {
 			String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
 			PreparedStatement ps = con.prepareStatement(sql);
 
-			ps.setString(1, user.getUsername());
+			ps.setString(1, user.getUserName());
 			ps.setString(2, user.getPassword());
 
 			int r = ps.executeUpdate();
@@ -36,15 +36,16 @@ public class UserDAO extends BaseDAO {
 		User returnUser = new User();
 
 		try (Connection con = DriverManager.getConnection(url, username, password)) {
-			String sql = "SELECT username, password FROM users WHERE username = ? AND password = ?";
+			String sql = "SELECT user_id, username, password FROM users WHERE username = ? AND password = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 
-			ps.setString(1, user.getUsername());
+			ps.setString(1, user.getUserName());
 			ps.setString(2, user.getPassword());
 
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				returnUser.setUsername(rs.getString("username"));
+				returnUser.setUserId(rs.getInt("user_id"));
+				returnUser.setUserName(rs.getString("username"));
 				returnUser.setPassword(rs.getString("password"));
 			} else {
 				return null;

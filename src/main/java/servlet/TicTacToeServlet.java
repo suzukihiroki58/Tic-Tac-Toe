@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.GameRecordsDAO;
 import model.CPUPlayer;
+import model.GameRecord;
 import model.HumanPlayer;
 import model.TicTacToe;
+import model.User;
 
 @WebServlet("/TicTacToeServlet")
 public class TicTacToeServlet extends HttpServlet {
@@ -22,14 +25,26 @@ public class TicTacToeServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
+
 		if (session != null) {
-			session.invalidate();
+			User loggedInUser = (User) session.getAttribute("user");
+			if (loggedInUser != null) {
+				String username = loggedInUser.getUserName();
+				request.setAttribute("loggedInUser", username);
+			}
 		}
 
 		TicTacToe game = new TicTacToe();
 		CPUPlayer cpu = new CPUPlayer();
 		char[][] board = game.getBoard();
 		game.decideTurnRandomly();
+
+		if (session == null) {
+			session = request.getSession(true);
+		}
+
+		session.setAttribute("game", game);
+
 		char symbol;
 		if ("CPU".equals(game.getCurrentPlayer())) {
 			symbol = game.getFirstPlayer().equals("CPU") ? 'O' : 'X';
@@ -37,8 +52,6 @@ public class TicTacToeServlet extends HttpServlet {
 			game.switchTurn();
 		}
 
-		HttpSession newSession = request.getSession(true);
-		newSession.setAttribute("game", game);
 		request.setAttribute("firstPlayer", game.getFirstPlayer());
 		request.setAttribute("secondPlayer", game.getSecondPlayer());
 
@@ -50,13 +63,14 @@ public class TicTacToeServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF8");
 
+		HttpSession session = request.getSession(false);
+
 		String replay = request.getParameter("replay");
 		if ("true".equals(replay)) {
 			doGet(request, response);
 			return;
 		}
 
-		HttpSession session = request.getSession(false);
 		TicTacToe game = (TicTacToe) session.getAttribute("game");
 		HumanPlayer human = new HumanPlayer();
 		CPUPlayer cpu = new CPUPlayer();
@@ -86,8 +100,32 @@ public class TicTacToeServlet extends HttpServlet {
 		}
 
 		String winner = game.checkWinner();
+
+		User loggedInUser = (User) session.getAttribute("user");
+		if (loggedInUser != null) {
+			String username = loggedInUser.getUserName();
+			request.setAttribute("loggedInUser", username);
+		}
+
+		GameRecord record = new GameRecord();
+		record.setUserId(loggedInUser.getUserId());
+		record.setTotalGames(1);
+
+		int userId = loggedInUser.getUserId();
+		System.out.println("UserIdは" + userId);
+
+		if ("Human".equals(winner)) {
+			record.setWins(1);
+		} else if ("CPU".equals(winner)) {
+			record.setLosses(1);
+		} else if ("Draw".equals(winner)) {
+			record.setDraws(1);
+		}
+
 		if (winner != null) {
 			request.setAttribute("winner", winner);
+			GameRecordsDAO dao = new GameRecordsDAO();
+			dao.upsertGameRecords(record);
 		}
 
 		session.setAttribute("game", game);

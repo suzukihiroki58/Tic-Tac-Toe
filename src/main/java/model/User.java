@@ -8,6 +8,7 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	private String symbol;
+	private int userId; 
 	
 	public User() {}
 	
@@ -15,14 +16,12 @@ public class User implements Serializable {
 		this.username = username;
 		this.password = password;
 	}
-	
-	
 
-	public String getUsername() {
+	public String getUserName() {
 		return username;
 	}
 
-	public void setUsername(String username) {
+	public void setUserName(String username) {
 		this.username = username;
 	}
 
@@ -37,5 +36,14 @@ public class User implements Serializable {
 	public String getSymbol() {
 		return symbol;
 	}
+	   // userId の getter メソッドを追加
+		public int getUserId() {
+			return userId;
+		}
+
+	    // userId の setter メソッドを追加
+		public void setUserId(int userId) {
+			this.userId = userId;
+		}
 
 }
