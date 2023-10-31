@@ -15,7 +15,7 @@ User loginUser = (User) session.getAttribute("user");
 <title>個人戦績</title>
 </head>
 <body>
-	<table>
+	<table border=1>
 		<thead>
 			<tr>
 				<th><%=request.getAttribute("loggedInUser")%>さんの戦績</th>
@@ -38,6 +38,6 @@ User loginUser = (User) session.getAttribute("user");
 			</tr>
 		</tbody>
 	</table>
-
+	<a href="MenuServlet">メニューへ戻る</a>
 </body>
 </html>

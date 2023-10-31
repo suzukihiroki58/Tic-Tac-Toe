@@ -83,6 +83,7 @@ char[][] board = game.getBoard();
 		<input type="hidden" name="replay" value="true"> <input
 			type="submit" value="再プレイ">
 	</form>
+	<a href="MenuServlet">メニューへ戻る</a>
 	<%
 	}
 	%>

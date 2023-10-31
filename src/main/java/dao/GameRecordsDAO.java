@@ -3,6 +3,8 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.GameRecord;
 
@@ -70,5 +72,36 @@ public class GameRecordsDAO extends BaseDAO {
 	    }
 
 	    return record;
+	}
+	
+	public List<GameRecord> getTopFiveUsers() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<GameRecord> ranking = new ArrayList<>();
+		
+		try {
+			conn = getConnection();
+			
+			String rankingQuery = "SELECT * FROM game_records ORDER BY win_rate DESC LIMIT 5";
+			ps = conn.prepareStatement(rankingQuery);
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				GameRecord record = new GameRecord();
+				record.setUserId(rs.getInt("user_id"));
+				record.setTotalGames(rs.getInt("total_games"));
+				record.setWins(rs.getInt("wins"));
+				record.setLosses(rs.getInt("losses"));
+				record.setDraws(rs.getInt("draws"));
+				record.setWinRate(rs.getDouble("win_rate"));
+				ranking.add(record);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeResources(conn, ps, rs);
+		}
+		return ranking;
 	}
 }

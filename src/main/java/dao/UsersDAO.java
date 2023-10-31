@@ -13,8 +13,8 @@ public class UsersDAO extends BaseDAO {
 	public static void registerUser(User user) {
 		try (Connection con = DriverManager.getConnection(url, username, password)) {
 
-			String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-			PreparedStatement ps = con.prepareStatement(sql);
+			String insertUserQuery = "INSERT INTO users (username, password) VALUES (?, ?)";
+			PreparedStatement ps = con.prepareStatement(insertUserQuery);
 
 			ps.setString(1, user.getUserName());
 			ps.setString(2, user.getPassword());
@@ -36,8 +36,8 @@ public class UsersDAO extends BaseDAO {
 		User returnUser = new User();
 
 		try (Connection con = DriverManager.getConnection(url, username, password)) {
-			String sql = "SELECT user_id, username, password FROM users WHERE username = ? AND password = ?";
-			PreparedStatement ps = con.prepareStatement(sql);
+			String findUserQuery = "SELECT user_id, username, password FROM users WHERE username = ? AND password = ?";
+			PreparedStatement ps = con.prepareStatement(findUserQuery);
 
 			ps.setString(1, user.getUserName());
 			ps.setString(2, user.getPassword());

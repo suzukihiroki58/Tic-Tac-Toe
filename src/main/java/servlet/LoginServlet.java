@@ -31,8 +31,6 @@ public class LoginServlet extends HttpServlet {
 		User user = new User();
 		user.setUserName(username);
 		user.setPassword(password);
-		
-		System.out.println("Debug: UserId is " + user.getUserId());
 
 		User returnUser = UsersDAO.findUser(user);
 
