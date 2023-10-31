@@ -41,51 +41,51 @@ public class GameRecordsDAO extends BaseDAO {
 			closeResources(conn, ps, null);
 		}
 	}
-	
+
 	public GameRecord getLoggedInUserRecord(int userId) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		GameRecord record = new GameRecord();
-		
+
 		try {
 			conn = getConnection();
-			
+
 			String selectQuery = "SELECT * FROM game_records WHERE user_id = ?";
 			ps = conn.prepareStatement(selectQuery);
-	        ps.setInt(1, userId);
+			ps.setInt(1, userId);
 
-	        rs = ps.executeQuery();
-	        if (rs.next()) {
-	            record.setUserId(rs.getInt("user_id"));
-	            record.setTotalGames(rs.getInt("total_games"));
-	            record.setWins(rs.getInt("wins"));
-	            record.setLosses(rs.getInt("losses"));
-	            record.setDraws(rs.getInt("draws"));
-	            record.setWinRate(rs.getDouble("win_rate"));
-	        }
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				record.setUserId(rs.getInt("user_id"));
+				record.setTotalGames(rs.getInt("total_games"));
+				record.setWins(rs.getInt("wins"));
+				record.setLosses(rs.getInt("losses"));
+				record.setDraws(rs.getInt("draws"));
+				record.setWinRate(rs.getDouble("win_rate"));
+			}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        closeResources(conn, ps, rs);
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeResources(conn, ps, rs);
+		}
 
-	    return record;
+		return record;
 	}
-	
+
 	public List<GameRecord> getTopFiveUsers() {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<GameRecord> ranking = new ArrayList<>();
-		
+
 		try {
 			conn = getConnection();
-			
+
 			String rankingQuery = "SELECT * FROM game_records ORDER BY win_rate DESC LIMIT 5";
 			ps = conn.prepareStatement(rankingQuery);
-			
+
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				GameRecord record = new GameRecord();

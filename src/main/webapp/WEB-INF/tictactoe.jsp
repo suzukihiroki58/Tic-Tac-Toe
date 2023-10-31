@@ -18,13 +18,11 @@ char[][] board = game.getBoard();
 		ログイン中のユーザー：<%=request.getAttribute("loggedInUser")%></h2>
 	<h2>TicTacToe</h2>
 
-	<!--　ランダムで先攻後攻が決定し、ゲーム開始-->
 	<h2>
 		先攻：<%=request.getAttribute("firstPlayer")%></h2>
 	<h2>
 		後攻：<%=request.getAttribute("secondPlayer")%></h2>
 
-	<!--　もしゲームが終了していなければ、どこにSymbolを置くか選ぶ-->
 	<%
 	String winner = (String) request.getAttribute("winner");
 	if (winner == null) {
@@ -54,7 +52,6 @@ char[][] board = game.getBoard();
 		%>
 	</table>
 
-	<!--　もしゲームが終了していれば、最後の盤面と勝敗結果と再プレイボタンを表示する-->
 	<%
 	} else {
 	%>

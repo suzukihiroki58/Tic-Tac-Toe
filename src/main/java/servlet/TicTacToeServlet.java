@@ -25,30 +25,23 @@ public class TicTacToeServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
-
-		if (session != null) {
-			User loggedInUser = (User) session.getAttribute("user");
-			if (loggedInUser != null) {
-				String username = loggedInUser.getUserName();
-				request.setAttribute("loggedInUser", username);
-			}
-		}
-
-		TicTacToe game = new TicTacToe();
-		CPUPlayer cpu = new CPUPlayer();
-		char[][] board = game.getBoard();
-		game.decideTurnRandomly();
-
+		
 		if (session == null) {
 			session = request.getSession(true);
 		}
+		User loggedInUser = (User) session.getAttribute("user");
+		if (loggedInUser != null) {
+			request.setAttribute("loggedInUser", loggedInUser.getUserName());
+		}
 
+		TicTacToe game = new TicTacToe();
+		game.decideTurnRandomly();
 		session.setAttribute("game", game);
 
-		char symbol;
 		if ("CPU".equals(game.getCurrentPlayer())) {
-			symbol = game.getFirstPlayer().equals("CPU") ? 'O' : 'X';
-			cpu.selectCellAutomatically(symbol, board);
+			CPUPlayer cpu = new CPUPlayer();
+			char symbol = game.getFirstPlayer().equals("CPU") ? 'O' : 'X';
+			cpu.selectCellAutomatically(symbol, game.getBoard());
 			game.switchTurn();
 		}
 
@@ -72,18 +65,15 @@ public class TicTacToeServlet extends HttpServlet {
 		}
 
 		TicTacToe game = (TicTacToe) session.getAttribute("game");
-		HumanPlayer human = new HumanPlayer();
-		CPUPlayer cpu = new CPUPlayer();
+		User loggedInUser = (User) session.getAttribute("user");
 
-		char[][] board = game.getBoard();
-
-		char symbol;
 		if ("Human".equals(game.getCurrentPlayer())) {
+			HumanPlayer human = new HumanPlayer();
 			int i = Integer.parseInt(request.getParameter("row"));
 			int j = Integer.parseInt(request.getParameter("col"));
-			symbol = game.getFirstPlayer().equals("Human") ? 'O' : 'X';
-			if (board[i][j] == ' ') {
-				human.selectCell(i, j, symbol, board);
+			char symbol = game.getFirstPlayer().equals("Human") ? 'O' : 'X';
+			if (game.getBoard()[i][j] == ' ') {
+				human.selectCell(i, j, symbol, game.getBoard());
 				String winner = game.checkWinner();
 				if (winner != null) {
 					request.setAttribute("winner", winner);
@@ -94,18 +84,13 @@ public class TicTacToeServlet extends HttpServlet {
 		}
 
 		if ("CPU".equals(game.getCurrentPlayer())) {
-			symbol = game.getFirstPlayer().equals("CPU") ? 'O' : 'X';
-			cpu.selectCellAutomatically(symbol, board);
+			CPUPlayer cpu = new CPUPlayer();
+			char symbol = game.getFirstPlayer().equals("CPU") ? 'O' : 'X';
+			cpu.selectCellAutomatically(symbol, game.getBoard());
 			game.switchTurn();
 		}
 
 		String winner = game.checkWinner();
-
-		User loggedInUser = (User) session.getAttribute("user");
-		if (loggedInUser != null) {
-			String username = loggedInUser.getUserName();
-			request.setAttribute("loggedInUser", username);
-		}
 
 		GameRecord record = new GameRecord();
 		record.setUserId(loggedInUser.getUserId());
@@ -126,11 +111,13 @@ public class TicTacToeServlet extends HttpServlet {
 		}
 
 		session.setAttribute("game", game);
-		session.setAttribute("board", game.getBoard());
 		request.setAttribute("firstPlayer", game.getFirstPlayer());
 		request.setAttribute("secondPlayer", game.getSecondPlayer());
 		request.setAttribute("currentPlayer", game.getCurrentPlayer());
-
+		if (loggedInUser != null) {
+			request.setAttribute("loggedInUser", loggedInUser.getUserName());
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/tictactoe.jsp");
 		rd.forward(request, response);
 	}
