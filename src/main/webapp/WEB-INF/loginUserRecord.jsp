@@ -18,7 +18,7 @@ User loginUser = (User) session.getAttribute("user");
 	<table border=1>
 		<thead>
 			<tr>
-				<th><%=request.getAttribute("loggedInUser")%>さんの戦績</th>
+				<th colspan="5"><%=request.getAttribute("loggedInUser")%>さんの戦績</th>
 			</tr>
 			<tr>
 				<th>総プレイ数</th>

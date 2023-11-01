@@ -38,12 +38,10 @@ public class User implements Serializable {
 		return symbol;
 	}
 
-	// userId の getter メソッドを追加
 	public int getUserId() {
 		return userId;
 	}
 
-	// userId の setter メソッドを追加
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
