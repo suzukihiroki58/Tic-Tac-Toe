@@ -11,7 +11,7 @@
 <body>
 	<table border=1>
 		<tr>
-			<th>ユーザーID</th>
+			<th>ユーザー名</th>
 			<th>総プレイ数</th>
 			<th>勝ち</th>
 			<th>負け</th>
@@ -23,7 +23,7 @@
 			for (GameRecord record : ranking) {
 		%>
 		<tr>
-			<td><%= record.getUserId() %></td>
+			<td><%= record.getUserName() %></td>
 			<td><%= record.getTotalGames() %></td>
 			<td><%= record.getWins() %></td>
 			<td><%= record.getLosses() %></td>

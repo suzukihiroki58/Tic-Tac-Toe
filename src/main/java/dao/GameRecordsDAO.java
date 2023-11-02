@@ -87,7 +87,7 @@ public class GameRecordsDAO extends BaseDAO {
 		try {
 			conn = getConnection();
 
-			String rankingQuery = "SELECT * FROM game_records ORDER BY win_rate DESC LIMIT 5";
+			String rankingQuery = "SELECT game_records.*, users.username FROM game_records JOIN users ON game_records.user_id = users.user_id ORDER BY win_rate DESC LIMIT 5";
 			ps = conn.prepareStatement(rankingQuery);
 
 			rs = ps.executeQuery();
@@ -99,6 +99,7 @@ public class GameRecordsDAO extends BaseDAO {
 				record.setLosses(rs.getInt("losses"));
 				record.setDraws(rs.getInt("draws"));
 				record.setWinRate(rs.getDouble("win_rate"));
+				record.setUserName(rs.getString("username"));
 				ranking.add(record);
 			}
 		} catch (Exception e) {

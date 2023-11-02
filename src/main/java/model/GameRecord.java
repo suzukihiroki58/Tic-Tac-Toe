@@ -7,6 +7,7 @@ public class GameRecord {
 	private int losses;
 	private int draws;
 	private double winRate;
+	private String username;
 
 	public int getUserId() {
 		return userId;
@@ -31,6 +32,10 @@ public class GameRecord {
 	public double getWinRate() {
 		return winRate;
 	}
+	
+	public String getUserName() {
+		return username;
+	}
 
 	public void setUserId(int userId) {
 		this.userId = userId;
@@ -54,6 +59,10 @@ public class GameRecord {
 
 	public void setWinRate(double winRate) {
 		this.winRate = winRate;
+	}
+	
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 }
