@@ -14,5 +14,8 @@
 		<input type="password" name="password" placeholder="30文字以内" required>
 		<br> <input type="submit" value="登録" class="button">
 	</form>
+	<% if (request.getAttribute("errorMessage") != null) { %>
+        <p><%= request.getAttribute("errorMessage") %></p>
+    <% } %>
 </body>
 </html>

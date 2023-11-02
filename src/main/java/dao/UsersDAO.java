@@ -56,4 +56,28 @@ public class UsersDAO extends BaseDAO {
 		}
 		return returnUser;
 	}
+	
+	public static boolean isUserNameExists(String userName) {
+		boolean exists = false;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+			String sql = "SELECT USERNAME FROM USERS WHERE USERNAME = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, userName);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				exists = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeResources(conn, ps, rs);
+		}
+
+		return exists;
+	}
 }

@@ -28,6 +28,13 @@ public class UserRegister extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		
+		if (UsersDAO.isUserNameExists(username)) {
+			request.setAttribute("errorMessage", "このユーザー名は既に使われています");
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/userRegister.jsp");
+			rd.forward(request, response);
+			return;
+		}
 
 		User user = new User();
 		user.setUserName(username);

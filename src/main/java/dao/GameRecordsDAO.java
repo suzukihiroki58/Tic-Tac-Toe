@@ -17,14 +17,13 @@ public class GameRecordsDAO extends BaseDAO {
 		try {
 			conn = getConnection();
 
-			String upsertQuery = "INSERT INTO game_records (user_id, total_games, wins, losses, draws, win_rate) "
-					+ "VALUES (?, ?, ?, ?, ?, ?) "
+			String upsertQuery = "INSERT INTO game_records (user_id, total_games, wins, losses, draws) "
+					+ "VALUES (?, ?, ?, ?, ?) "
 					+ "ON DUPLICATE KEY UPDATE "
 					+ "total_games = total_games + 1, "
 					+ "wins = wins + VALUES(wins), "
 					+ "losses = losses + VALUES(losses), "
-					+ "draws = draws + VALUES(draws), "
-					+ "win_rate = (wins / total_games) * 100";
+					+ "draws = draws + VALUES(draws) ";
 
 			ps = conn.prepareStatement(upsertQuery);
 			ps.setInt(1, record.getUserId());
@@ -32,7 +31,12 @@ public class GameRecordsDAO extends BaseDAO {
 			ps.setInt(3, record.getWins());
 			ps.setInt(4, record.getLosses());
 			ps.setInt(5, record.getDraws());
-			ps.setDouble(6, record.getWinRate());
+
+			ps.executeUpdate();
+			String updateWinRateQuery = "UPDATE game_records SET win_rate = (wins / (total_games * 1.0)) * 100 WHERE user_id = ?";
+
+			ps = conn.prepareStatement(updateWinRateQuery);
+			ps.setInt(1, record.getUserId());
 
 			ps.executeUpdate();
 		} catch (Exception e) {

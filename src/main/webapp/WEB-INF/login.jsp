@@ -16,5 +16,8 @@
 	<p>
 		アカウントをまだ持っていない方<br> <a href="UserRegister"><button>新規登録ページへ</button></a>
 	</p>
+	<%if (request.getAttribute("errorMessage") != null) { %>
+		<%=request.getAttribute("errorMessage")%>
+	<%} %>
 </body>
 </html>
